@@ -231,3 +231,9 @@ body {
     height: 3rem;
     color: #2c5aa0 !important;
 }
+
+@media screen and (max-width: 768px) {
+    .header-logo {
+        display: none;
+    }
+}
