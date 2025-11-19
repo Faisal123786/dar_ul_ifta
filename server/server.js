@@ -13,13 +13,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/daruliftaa', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('MongoDB Connected Successfully'))
-.catch(err => console.log('MongoDB Connection Error:', err));
+mongoose.connect('mongodb+srv://shahid:shahid@caffe-management-system.wgqyokv.mongodb.net/?appName=caffe-management-system',)
+  .then(() => console.log('MongoDB Connected Successfully'))
+  .catch(err => console.log('MongoDB Connection Error:', err));
+
 
 // Question Schema
 const questionSchema = new mongoose.Schema({

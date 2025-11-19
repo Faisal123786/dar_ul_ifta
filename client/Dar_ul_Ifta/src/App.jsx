@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 // API Base URL - Change this to your backend URL
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'; // if using Vite
+const API_URL = import.meta.env.VITE_API_URL || 'https://dar-ul-ifta-xzyf.vercel.app/api'; // if using Vite
 
 function App() {
   // State Management
