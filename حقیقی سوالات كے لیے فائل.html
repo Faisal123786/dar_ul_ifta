@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دار الافتاء- سوالات مینجمنٹ سسٹم</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .header {
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e3a8a 100%);
+            color: white;
+            padding: 1.5rem 0;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            border: none;
+        }
+        .card-header {
+            background-color: #1e3a8a;
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+            font-weight: bold;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logo-img {
+            height: 70px;
+            width: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .btn-primary {
+            background-color: #1e3a8a;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #2c5aa0;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-completed {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+        .status-in-progress {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .badge {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.6rem;
+        }
+        .table th {
+            background-color: #f1f5f9;
+        }
+        .filter-section {
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .stats-card {
+            text-align: center;
+            padding: 15px;
+        }
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+        .stats-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        .footer {
+            background-color: #1e3a8a;
+            color: white;
+            padding: 1rem 0;
+            margin-top: 2rem;
+            border-radius: 10px 10px 0 0;
+        }
+
+            @media screen and (max-width: 768px) {
+                #header-logo{
+                    display: none;
+                }
+            }
+    </style>
+</head>
+<body>
+    <!-- ہیڈر -->
+    <header class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="logo-container">
+                        <h1 class="logo"><i class="fas fa-mosque me-2"></i> دار الافتاء جامعة الحسنين</h1>
+                    </div>
+                    <p class="mb-0">اندراج رجسٹر برائے استفتاءات</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div style="display: flex;justify-content: end;">
+                        <!-- <p class="mb-0" id="current-date"></p> -->
+                       <img id="header-logo" src="WhatsApp Image 2025-11-19 at 01.59.11_887827a7.jpg" alt="" style="width: 100px;height:100px;object-fit: contain;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container my-4">
+        <!-- شماریات -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="stats-number" id="total-questions">0</div>
+                    <div class="stats-label">کل سوالات</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="stats-number" id="pending-questions">0</div>
+                    <div class="stats-label">زیر التواء</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="stats-number" id="completed-questions">0</div>
+                    <div class="stats-label">مکمل شدہ</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="stats-number" id="in-progress-questions">0</div>
+                    <div class="stats-label">جاری ہیں</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- فلٹر سیکشن -->
+        <div class="filter-section">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="status-filter" class="form-label">حیثیت کے لحاظ سے فلٹر کریں</label>
+                    <select class="form-select" id="status-filter">
+                        <option value="all">تمام سوالات</option>
+                        <option value="pending">زیر التواء</option>
+                        <option value="in-progress">جاری ہیں</option>
+                        <option value="completed">مکمل شدہ</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="resolver-filter" class="form-label">حل کرنے والے کے لحاظ سے فلٹر کریں</label>
+                    <select class="form-select" id="resolver-filter">
+                        <option value="all">تمام حل کرنے والے</option>
+                        <!-- حل کرنے والوں کی فہرست یہاں جے ایس کے ذریعے بھری جائے گی -->
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="date-from" class="form-label">تاریخ سے</label>
+                    <input type="date" class="form-control" id="date-from">
+                </div>
+                <div class="col-md-3">
+                    <label for="date-to" class="form-label">تاریخ تک</label>
+                    <input type="date" class="form-control" id="date-to">
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12 text-center">
+                    <button class="btn btn-primary me-2" id="apply-filters">فلٹرز لاگو کریں</button>
+                    <button class="btn btn-outline-secondary" id="reset-filters">فلٹرز ری سیٹ کریں</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- سوالات کی فہرست -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-list me-2"></i>سوالات کی فہرست</span>
+                <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#addQuestionModal">
+                    <i class="fas fa-plus me-1"></i>نیا سوال شامل کریں
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>اندراج نمبر</th>
+                                <th>عنوان</th>
+                                <th>تاریخ</th>
+                                <th>حل کرنے والا</th>
+                                <th>حیثیت</th>
+                                <th>عمل</th>
+                            </tr>
+                        </thead>
+                        <tbody id="questions-table-body">
+                            <!-- سوالات کی فہرست یہاں لوڈ ہوگی -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نیا سوال شامل کرنے کا مودل -->
+    <div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="addQuestionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addQuestionModalLabel">نیا سوال شامل کریں</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-question-form">
+                        <div class="mb-3">
+                            <label for="question-title" class="form-label">سوال کا عنوان</label>
+                            <input type="text" class="form-control" id="question-title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="entry-number" class="form-label">اندراج نمبر</label>
+                            <input type="text" class="form-control" id="entry-number" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="question-date" class="form-label">تاریخ</label>
+                            <input type="date" class="form-control" id="question-date" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="modal-resolver" class="form-label">حل کرنے والا</label>
+                            <select class="form-select" id="modal-resolver" required>
+                                <option value="">حل کرنے والے کا انتخاب کریں</option>
+                                <!-- حل کرنے والوں کی فہرست یہاں جے ایس کے ذریعے بھری جائے گی -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="question-status" class="form-label">حیثیت</label>
+                            <select class="form-select" id="question-status" required>
+                                <option value="pending">زیر التواء</option>
+                                <option value="in-progress">جاری ہے</option>
+                                <option value="completed">مکمل شدہ</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">منسوخ کریں</button>
+                    <button type="button" class="btn btn-primary" id="save-question">محفوظ کریں</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- سوال کی تفصیلات دیکھنے کا مودل -->
+    <div class="modal fade" id="questionDetailModal" tabindex="-1" aria-labelledby="questionDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="questionDetailModalLabel">سوال کی تفصیلات</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <strong>اندراج نمبر:</strong> <span id="detail-entry-number"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>عنوان:</strong> <span id="detail-title"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>تاریخ:</strong> <span id="detail-date"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>حل کرنے والا:</strong> <span id="detail-resolver"></span>
+                    </div>
+                    <div class="mb-3">
+                        <strong>حیثیت:</strong> <span id="detail-status"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بند کریں</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- فوٹر -->
+    <footer class="footer">
+        <div class="container text-center">
+            <p class="mb-0">دار الافتاء سوالات مینجمنٹ سسٹم &copy; <span id="current-year"></span></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // موجودہ تاریخ اور سال سیٹ کریں
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('ur-PK');
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // حل کرنے والوں کی فہرست
+        const resolvers = [
+            'محمد دین', 'محمد زید', 'محمد احمد', 'محمد', 
+            'علی منظور', 'عبد القدیر', 'انعام اللہ خان', 'صاحب علی', 
+            'احمد حسین', 'زریاب خان', 'محمد اویس', 'محمد شہاب خان', 'محمد سلیمان'
+        ];
+
+        // ابتدائی ڈیٹا
+        let questions = JSON.parse(localStorage.getItem('questions')) || [
+            {
+                id: 1,
+                entryNumber: 'FAT-001',
+                title: 'نماز میں سورہ فاتحہ پڑھنے کا حکم',
+                date: '2023-05-15',
+                resolver: 'محمد دین',
+                status: 'completed'
+            },
+            {
+                id: 2,
+                entryNumber: 'FAT-002',
+                title: 'زکوٰۃ کے اوقات اور شرائط',
+                date: '2023-05-18',
+                resolver: 'علی منظور',
+                status: 'in-progress'
+            },
+            {
+                id: 3,
+                entryNumber: 'FAT-003',
+                title: 'عیدین کی نماز کا طریقہ',
+                date: '2023-05-20',
+                resolver: 'انعام اللہ خان',
+                status: 'pending'
+            }
+        ];
+
+        // DOM لوڈ ہونے پر فنکشنز چلائیں
+        document.addEventListener('DOMContentLoaded', function() {
+            populateResolverDropdowns();
+            renderQuestionsTable();
+            updateStats();
+            setupModalListeners();
+        });
+
+        // حل کرنے والوں کے ڈراپ ڈاؤن آباد کریں
+        function populateResolverDropdowns() {
+            const resolverFilter = document.getElementById('resolver-filter');
+            const modalResolver = document.getElementById('modal-resolver');
+            
+            // فلٹر ڈراپ ڈاؤن
+            resolverFilter.innerHTML = '<option value="all">تمام حل کرنے والے</option>';
+            resolvers.forEach(resolver => {
+                const option = document.createElement('option');
+                option.value = resolver;
+                option.textContent = resolver;
+                resolverFilter.appendChild(option);
+            });
+            
+            // مودل ڈراپ ڈاؤن
+            modalResolver.innerHTML = '<option value="">حل کرنے والے کا انتخاب کریں</option>';
+            resolvers.forEach(resolver => {
+                const option = document.createElement('option');
+                option.value = resolver;
+                option.textContent = resolver;
+                modalResolver.appendChild(option);
+            });
+        }
+
+        // سوالات کی ٹیبل رینڈر کریں
+        function renderQuestionsTable(filteredQuestions = questions) {
+            const tableBody = document.getElementById('questions-table-body');
+            tableBody.innerHTML = '';
+
+            if (filteredQuestions.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">کوئی سوال دستیاب نہیں ہے</td></tr>';
+                return;
+            }
+
+            filteredQuestions.forEach(question => {
+                const row = document.createElement('tr');
+                
+                // حیثیت کے لیے کلاس اور متن
+                let statusClass = '';
+                let statusText = '';
+                
+                switch(question.status) {
+                    case 'pending':
+                        statusClass = 'status-pending';
+                        statusText = 'زیر التواء';
+                        break;
+                    case 'in-progress':
+                        statusClass = 'status-in-progress';
+                        statusText = 'جاری ہے';
+                        break;
+                    case 'completed':
+                        statusClass = 'status-completed';
+                        statusText = 'مکمل شدہ';
+                        break;
+                }
+
+                row.innerHTML = `
+                    <td>${question.entryNumber}</td>
+                    <td>${question.title}</td>
+                    <td>${formatDate(question.date)}</td>
+                    <td>${question.resolver}</td>
+                    <td><span class="badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary view-question" data-id="${question.id}">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger delete-question" data-id="${question.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+
+            // ایونٹ لسٹنرز شامل کریں
+            document.querySelectorAll('.view-question').forEach(button => {
+                button.addEventListener('click', function() {
+                    const questionId = parseInt(this.getAttribute('data-id'));
+                    viewQuestionDetails(questionId);
+                });
+            });
+
+            document.querySelectorAll('.delete-question').forEach(button => {
+                button.addEventListener('click', function() {
+                    const questionId = parseInt(this.getAttribute('data-id'));
+                    deleteQuestion(questionId);
+                });
+            });
+        }
+
+        // تاریخ کو بہتر فارمیٹ میں تبدیل کریں
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('ur-PK', options);
+        }
+
+        // سوال کی تفصیلات دیکھیں
+        function viewQuestionDetails(questionId) {
+            const question = questions.find(q => q.id === questionId);
+            if (!question) return;
+
+            // حیثیت کا متن
+            let statusText = '';
+            switch(question.status) {
+                case 'pending':
+                    statusText = 'زیر التواء';
+                    break;
+                case 'in-progress':
+                    statusText = 'جاری ہے';
+                    break;
+                case 'completed':
+                    statusText = 'مکمل شدہ';
+                    break;
+            }
+
+            document.getElementById('detail-entry-number').textContent = question.entryNumber;
+            document.getElementById('detail-title').textContent = question.title;
+            document.getElementById('detail-date').textContent = formatDate(question.date);
+            document.getElementById('detail-resolver').textContent = question.resolver;
+            document.getElementById('detail-status').textContent = statusText;
+
+            const modal = new bootstrap.Modal(document.getElementById('questionDetailModal'));
+            modal.show();
+        }
+
+        // سوال حذف کریں
+        function deleteQuestion(questionId) {
+            if (confirm('کیا آپ واقعی اس سوال کو حذف کرنا چاہتے ہیں؟')) {
+                questions = questions.filter(q => q.id !== questionId);
+                saveToLocalStorage();
+                renderQuestionsTable();
+                updateStats();
+            }
+        }
+
+        // شماریات اپ ڈیٹ کریں
+        function updateStats() {
+            const total = questions.length;
+            const pending = questions.filter(q => q.status === 'pending').length;
+            const completed = questions.filter(q => q.status === 'completed').length;
+            const inProgress = questions.filter(q => q.status === 'in-progress').length;
+
+            document.getElementById('total-questions').textContent = total;
+            document.getElementById('pending-questions').textContent = pending;
+            document.getElementById('completed-questions').textContent = completed;
+            document.getElementById('in-progress-questions').textContent = inProgress;
+        }
+
+        // لوکل اسٹوریج میں محفوظ کریں
+        function saveToLocalStorage() {
+            localStorage.setItem('questions', JSON.stringify(questions));
+        }
+
+        // فلٹرز لاگو کریں
+        document.getElementById('apply-filters').addEventListener('click', function() {
+            const statusFilter = document.getElementById('status-filter').value;
+            const resolverFilter = document.getElementById('resolver-filter').value;
+            const dateFrom = document.getElementById('date-from').value;
+            const dateTo = document.getElementById('date-to').value;
+
+            let filteredQuestions = questions;
+
+            // حیثیت کے لحاظ سے فلٹر
+            if (statusFilter !== 'all') {
+                filteredQuestions = filteredQuestions.filter(q => q.status === statusFilter);
+            }
+
+            // حل کرنے والے کے لحاظ سے فلٹر
+            if (resolverFilter !== 'all') {
+                filteredQuestions = filteredQuestions.filter(q => q.resolver === resolverFilter);
+            }
+
+            // تاریخ کے لحاظ سے فلٹر
+            if (dateFrom) {
+                filteredQuestions = filteredQuestions.filter(q => new Date(q.date) >= new Date(dateFrom));
+            }
+
+            if (dateTo) {
+                filteredQuestions = filteredQuestions.filter(q => new Date(q.date) <= new Date(dateTo));
+            }
+
+            renderQuestionsTable(filteredQuestions);
+        });
+
+        // فلٹرز ری سیٹ کریں
+        document.getElementById('reset-filters').addEventListener('click', function() {
+            document.getElementById('status-filter').value = 'all';
+            document.getElementById('resolver-filter').value = 'all';
+            document.getElementById('date-from').value = '';
+            document.getElementById('date-to').value = '';
+            renderQuestionsTable();
+        });
+
+        // مودل کے لیے ایونٹ لسٹنرز سیٹ اپ کریں
+        function setupModalListeners() {
+            // مودل کھلنے پر تاریخ اور نمبر سیٹ کریں
+            document.getElementById('addQuestionModal').addEventListener('show.bs.modal', function () {
+                // آج کی تاریخ سیٹ کریں
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('question-date').value = today;
+                
+                // خودکار اندراج نمبر جنریٹ کریں
+                const nextId = questions.length > 0 ? Math.max(...questions.map(q => q.id)) + 1 : 1;
+                document.getElementById('entry-number').value = `FAT-${nextId.toString().padStart(3, '0')}`;
+            });
+
+            // نیا سوال محفوظ کریں
+            document.getElementById('save-question').addEventListener('click', function() {
+                const title = document.getElementById('question-title').value;
+                const entryNumber = document.getElementById('entry-number').value;
+                const date = document.getElementById('question-date').value;
+                const resolver = document.getElementById('modal-resolver').value;
+                const status = document.getElementById('question-status').value;
+
+                if (!title || !entryNumber || !date || !resolver) {
+                    alert('براہ کرم تمام ضروری فیلڈز کو پُر کریں');
+                    return;
+                }
+
+                // نیا سوال شامل کریں
+                const newQuestion = {
+                    id: questions.length > 0 ? Math.max(...questions.map(q => q.id)) + 1 : 1,
+                    entryNumber,
+                    title,
+                    date,
+                    resolver,
+                    status
+                };
+
+                questions.push(newQuestion);
+                saveToLocalStorage();
+                renderQuestionsTable();
+                updateStats();
+
+                // مودل بند کریں اور فارم ری سیٹ کریں
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addQuestionModal'));
+                modal.hide();
+                document.getElementById('add-question-form').reset();
+
+                alert('سوال کامیابی سے شامل کر دیا گیا ہے');
+            });
+        }
+    </script>
+</body>
+</html>
